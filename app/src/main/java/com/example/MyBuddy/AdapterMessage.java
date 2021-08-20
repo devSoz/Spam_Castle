@@ -1,44 +1,44 @@
 package com.example.MyBuddy;
 
-        import android.content.Context;
-        import android.content.Intent;
-        import android.graphics.Bitmap;
-        import android.graphics.BitmapFactory;
-        import android.graphics.drawable.BitmapDrawable;
-        import android.net.Uri;
-        import android.os.Environment;
-        import android.text.format.DateFormat;
-        import android.util.Log;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.Filter;
-        import android.widget.Filterable;
-        import android.widget.ImageButton;
-        import android.widget.ImageView;
-        import android.widget.LinearLayout;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import androidx.core.content.FileProvider;
-        import androidx.recyclerview.widget.RecyclerView;
-        import java.io.File;
-        import java.io.FileOutputStream;
-        import java.util.ArrayList;
-        import java.util.Calendar;
-        import java.util.List;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.RecyclerView;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-        import androidx.core.content.FileProvider;
+import androidx.core.content.FileProvider;
 
-        import com.example.MyBuddy.Model.Chat;
-        import com.example.MyBuddy.Model.user;
-        import com.squareup.picasso.Picasso;
+import com.example.MyBuddy.Model.Chat;
+import com.example.MyBuddy.Model.user;
+import com.squareup.picasso.Picasso;
 
-        import java.io.File;
-        import java.io.FileOutputStream;
-        import java.util.Locale;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Locale;
 
-        import de.hdodenhof.circleimageview.CircleImageView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatViewHolder>
         //implements Filterable
@@ -105,7 +105,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         else {
             left = 1;
         }
-        return 1;
+        return left;
     }
 
     @Override

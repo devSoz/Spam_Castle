@@ -49,9 +49,11 @@ public class MessageActivity extends AppCompatActivity {
     {
         EditText msgText = findViewById(R.id.msgText);
         ImageButton msgSend = findViewById(R.id.sendmsg);
-        msgSend.setOnClickListener(new View.OnClickListener() {
+        msgSend.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 String message = String.valueOf(msgText.getText());
                 if (message !="") {
                     dbReference = FirebaseDatabase.getInstance().getReference("chat");
@@ -59,7 +61,7 @@ public class MessageActivity extends AppCompatActivity {
                     Chat chat = new Chat(message, "Topic1", "dcLgBgvDLhNkprfbOHayJXdDQYY2", "t", timeStamp);
                     dbReference.child("Topic1").push().setValue(chat);
                     msgText.setText("");
-                    getChatData();
+
                 }
 
             }
@@ -73,6 +75,7 @@ public class MessageActivity extends AppCompatActivity {
         dbReference.addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chatList.clear();
                 for(DataSnapshot snapshot1 : snapshot.getChildren())
                 {
                     Chat chat = snapshot1.getValue(Chat.class);
@@ -82,7 +85,6 @@ public class MessageActivity extends AppCompatActivity {
                 recyclerViewChat.setAdapter(adapterMessage);
             }
 
-
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
@@ -90,6 +92,6 @@ public class MessageActivity extends AppCompatActivity {
             }
             });
 
-        }
     }
+}
 

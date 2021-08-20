@@ -112,7 +112,8 @@ public class AuthenticateUser extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -127,7 +128,8 @@ public class AuthenticateUser extends AppCompatActivity {
         }
     }
 
-    private void getGoogleAuthCredential(GoogleSignInAccount googleSignInAccount) {
+    private void getGoogleAuthCredential(GoogleSignInAccount googleSignInAccount)
+    {
         String googleTokenId = googleSignInAccount.getIdToken();
         AuthCredential googleAuthCredential = GoogleAuthProvider.getCredential(googleTokenId, null);
         signInWithGoogleAuthCredential(googleAuthCredential);
@@ -174,6 +176,7 @@ public class AuthenticateUser extends AppCompatActivity {
                                         databaseReference.child(uid).setValue(user);
                                         storeUserData(uid,name,imageUrl);
                                         showToast("Firebase success");
+
                                     }
 
                                     else
