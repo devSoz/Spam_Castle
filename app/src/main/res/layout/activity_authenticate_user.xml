@@ -13,6 +13,10 @@
         android:layout_marginTop="198dp"
         android:textSize="40dp"
         android:text="Welcome to MyBuddy" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearauth">
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_sign_in_button"
         android:layout_width="wrap_content"
@@ -20,6 +24,6 @@
         android:background="@drawable/bgclr"
         android:layout_centerInParent="true"
         app:buttonSize="wide"/>
-
+    </LinearLayout>
 
 </RelativeLayout>

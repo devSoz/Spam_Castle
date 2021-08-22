@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.auth.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AuthenticateUser extends AppCompatActivity {
@@ -65,9 +67,72 @@ public class AuthenticateUser extends AppCompatActivity {
                 this,
                 R.font.seaweed);
         txt1.setTypeface(typeface);
+        LinearLayout linearauth=(LinearLayout)  findViewById(R.id.linearauth);
 
         getUserData();
-       // if(uid !="") {
+       /* databaseReference = FirebaseDatabase.getInstance().getReference("users");
+
+        String name = "Sumathi Jeganathan";
+        String email = "sumathi.jeganathan@gmail.com";
+        String imageUrl = "https://firebasestorage.googleapis.com/v0/b/my-buddy-c3898.appspot.com/o/ChatImages%2Fpost1629645431303?alt=media&token=35e6126a-570e-4f1d-a289-7fbb60e5412c";
+        Boolean typing = false;
+        String u="bqewNaOAk8e3cASuGCjyLXolCaO2";
+        user user1 = new user(u, name, email, imageUrl, typing, true);
+        databaseReference.child(u).setValue(user1);
+        //user.isNew = isNewUser;
+         name = "Devipriya Sozharajan";
+         email = "devipriyasabi@gmail.com";
+         imageUrl = "https://firebasestorage.googleapis.com/v0/b/my-buddy-c3898.appspot.com/o/ChatImages%2Fpost1629645431303?alt=media&token=35e6126a-570e-4f1d-a289-7fbb60e5412c";
+         typing = false;
+
+    u="dcLgBgvDLhNkprfbOHayJXdDQYY2";
+        user1 = new user(u, name, email, imageUrl, typing, true);
+        //databaseReference.push().setValue(user);
+        databaseReference.child(u).setValue(user1);
+        name = "Dev Kriyaz";
+        email = "dev.kriyaz@gmail.com";
+        imageUrl = "https://firebasestorage.googleapis.com/v0/b/my-buddy-c3898.appspot.com/o/ChatImages%2Fpost1629645431303?alt=media&token=35e6126a-570e-4f1d-a289-7fbb60e5412c";
+        typing = false;
+        u="zGzHxWh0ZtTTRliRUC27H0BkjVl2";
+        user1 = new user(u, name, email, imageUrl, typing, true);
+        //databaseReference.push().setValue(user);
+        databaseReference.child(u).setValue(user1);
+*/
+        List<user> userList = new ArrayList<user>();
+
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot)
+                {
+                    userList.clear();
+                    for(DataSnapshot snapshot1 : snapshot.getChildren())
+                    {
+                        user user1 = snapshot1.getValue(user.class);
+                        userList.add(user1);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+
+
+        if(myuid !="") {
+          // linearauth.setVisibility(View.);
+            Intent intentFirst = new Intent(AuthenticateUser.this, topicsListActivity.class);
+            intentFirst.putExtra("userId", myuid);
+            intentFirst.putExtra("imageUrl", imageUrl);
+
+            startActivity(intentFirst);
+        }
+        else {
             initSignInButton();
             initGoogleSignInClient();
             firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance();
@@ -85,7 +150,7 @@ public class AuthenticateUser extends AppCompatActivity {
                     }
                 }
             };
-
+        }
         }
    // }
 
@@ -183,7 +248,7 @@ public class AuthenticateUser extends AppCompatActivity {
                                     {
                                         showToast("User already registered");
                                     }
-
+                                    storeUserData(myuid,name,imageUrl);
                                     Intent intentFirst = new Intent(AuthenticateUser.this, topicsListActivity.class);
                                     intentFirst.putExtra("userId", myuid);
 

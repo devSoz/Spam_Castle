@@ -32,11 +32,13 @@ import androidx.core.content.FileProvider;
 
 import com.example.MyBuddy.Model.Chat;
 import com.example.MyBuddy.Model.user;
+import com.google.firebase.firestore.auth.User;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Locale;
+import java.util.function.Predicate;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,27 +46,29 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         //implements Filterable
 {
 
-    private List<Chat> chatList= new ArrayList<Chat>();
+    private List<Chat> chatList = new ArrayList<Chat>();
+    private List<user> userList = new ArrayList<user>();
     private List<Chat> chatListFull= new ArrayList<Chat>();
+    private List<user> userList2;
     private String userId, topicId;
     Context context;
     private String filterPattern="";
     int left;
 
-    public AdapterMessage(List<Chat> chatList, String userId, Context context, String topicId)
+    public AdapterMessage(List<user> userList, List<Chat> chatList, String userId, Context context, String topicId)
     {
         this.chatList = chatList;
+        this.userList = userList;
         this.userId = userId;
         this.context = context;
         this.topicId = topicId;
     }
+
     public static class chatViewHolder extends RecyclerView.ViewHolder
     {
-        TextView txtTime, txtMsg, txtIsSeen, txtName;
+        TextView txtTime, txtMsg, txtIsSeen, txtUserName;
         CircleImageView imageProfile;
         ImageView chatImage;
-        //ImageView images;
-        //ImageButton imgBtnSend;
 
         public chatViewHolder(View view)
         {
@@ -73,7 +77,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
             txtMsg = (TextView) view.findViewById(R.id.txtMsg);
             txtIsSeen = (TextView) view.findViewById(R.id.txtIsSeen);
             txtTime = (TextView) view.findViewById(R.id.txtTime);
-            txtName = (TextView) view.findViewById(R.id.txtName);
+            txtUserName = (TextView) view.findViewById(R.id.txtUserName);
             chatImage=(ImageView) view.findViewById((R.id.images));
         }
     }
@@ -84,7 +88,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         LayoutInflater inflater = LayoutInflater.from(context);
         Log.d("viewchumo", String.valueOf(viewType));
         //View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
-        if(viewType==0) {
+        if(viewType==1) {
            View view = inflater.inflate(R.layout.message_right, parent, false);
            return new chatViewHolder(view);
         }
@@ -96,8 +100,8 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
     }
 
     @Override
-    public int getItemViewType(int position) {
-
+    public int getItemViewType(int position)
+    {
         if(chatList.get(position).getSender().equals(userId))
         {
             left=0;
@@ -111,15 +115,31 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
     @Override
     public void onBindViewHolder(chatViewHolder holder, final int position)
     {
+        String userName, userImageUrl;
         String msg = chatList.get(position).getMessage();
         String timeStamp = chatList.get(position).getTimestamp();
-
+        String sender=chatList.get(position).getSender();
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(Long.parseLong(timeStamp));
         String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
 
-       // if(left==1)
-       // {holder.txtName.setText("testname");}
+
+            for (int i = 0; i < userList.size(); i++) {
+                if (userList.get(i).getuid().equals(sender)) {
+                    userName = userList.get(i).getuserName();
+                    userImageUrl = userList.get(i).getUserImageUrl();
+
+                    Picasso.get()
+                            .load(userImageUrl)
+                            .placeholder(R.color.white)
+                            .into(holder.imageProfile);
+                    holder.txtUserName.setText(userName);
+                    break;
+                }
+            }
+
+        //Integer posUser = userList.indexOf(userId);
+
 
         Log.d("bindchumo",chatList.get(position).getSender()+" "+position);
         //String isSeen = chatList.get(position).get;
@@ -142,7 +162,6 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         }
 
         holder.txtTime.setText(dateTime);
-
 
         /*holder.imgBtnSend.setOnClickListener(new View.OnClickListener() {
             @Override

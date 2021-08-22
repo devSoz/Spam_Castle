@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.MyBuddy.Model.Chat;
+import com.example.MyBuddy.Model.user;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -39,23 +40,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
 
-    public FirebaseDatabase firebaseDatabase;
-    public DatabaseReference dbReference;
-    public AdapterMessage adapterMessage;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference dbReference, dbReferenceUser;
+    private AdapterMessage adapterMessage;
     private  LinearLayoutManager linearLayoutManager;
     public List<Chat> chatList;
-    public RecyclerView recyclerViewChat;
-    private String myuid, mytopic;
+    private List<user> userList;
+    private RecyclerView recyclerViewChat;
+    private String myuid, mytopic,mytopicUrl="", mytopicName="";
     private String cameraPermission[];
     private String storagePermission[];
     private Boolean notify;
@@ -83,14 +88,23 @@ public class MessageActivity extends AppCompatActivity {
 
         getData();
         messageAlert();
+        getUserList();
         getChatData();
     }
 
     public void messageAlert()
     {
         EditText msgText = findViewById(R.id.msgText);
+        TextView tvTopicName = findViewById(R.id.tvtopicname);
+        CircleImageView tvTopicUrl = findViewById(R.id.imgTopicPic);
+        Picasso.get()
+                .load(mytopicUrl)
+                .placeholder(R.color.white)
+                .into(tvTopicUrl);
         ImageButton msgSend = findViewById(R.id.sendmsg);
         ImageButton attachImage = findViewById(R.id.attachbtn);
+        tvTopicName = tvTopicName;
+
         msgSend.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -122,7 +136,8 @@ public class MessageActivity extends AppCompatActivity {
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
+                if (which == 0)
+                {
                     if (!checkPerforCamera()) {
                         reqImagePermission(1);
                     } else {
@@ -312,9 +327,6 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     public void getChatData()
     {
         chatList = new ArrayList<Chat>();
@@ -328,7 +340,8 @@ public class MessageActivity extends AppCompatActivity {
                     Chat chat = snapshot1.getValue(Chat.class);
                     chatList.add(chat);
                 }
-                adapterMessage = new AdapterMessage(chatList, myuid, MessageActivity.this, mytopic);
+
+                adapterMessage = new AdapterMessage(userList, chatList, myuid, MessageActivity.this, mytopic);
                 recyclerViewChat.setAdapter(adapterMessage);
             }
 
@@ -345,6 +358,32 @@ public class MessageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         myuid = intent.getStringExtra("userId");
         mytopic = intent.getStringExtra("topicId");
+        mytopicUrl = intent.getStringExtra("topicUrl");
+        mytopicName = intent.getStringExtra("topicName");
+    }
+
+    public void getUserList()
+    {
+        userList = new ArrayList<user>();
+        dbReferenceUser = FirebaseDatabase.getInstance().getReference("users");
+
+        dbReferenceUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                userList.clear();
+                for(DataSnapshot snapshot1 : snapshot.getChildren())
+                {
+                    user user1 = snapshot1.getValue(user.class);
+                    userList.add(user1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
 

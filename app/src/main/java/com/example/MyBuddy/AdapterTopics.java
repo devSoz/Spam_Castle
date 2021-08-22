@@ -49,7 +49,7 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
     private String userId, topicId;
     private Integer rowLayout;
     Context context;
-    private String filterPattern="",myuid;
+    private String filterPattern="",myuid,topicUrl="";
     int left;
 
     public AdapterTopics(List<Topic> topicList, Context context, Integer rowLayout, String myuid)
@@ -112,6 +112,8 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
              //   context.startActivity(new Intent(context, MessageActivity.class));
                 intent.putExtra("userId", myuid);
                 intent.putExtra("topicId", topicList.get(pos).getTopicId());
+                intent.putExtra("topicUrl", topicList.get(pos).getImageUrl());
+                intent.putExtra("topicName", topicList.get(pos).getImageUrl());
                 context.startActivity(intent);
             }
         });
