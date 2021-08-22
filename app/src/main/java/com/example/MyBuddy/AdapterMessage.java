@@ -85,11 +85,11 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         Log.d("viewchumo", String.valueOf(viewType));
         //View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
         if(viewType==0) {
-           View view = inflater.inflate(R.layout.message_left, parent, false);
+           View view = inflater.inflate(R.layout.message_right, parent, false);
            return new chatViewHolder(view);
         }
         else {
-            View view = inflater.inflate(R.layout.message_right, parent, false);
+            View view = inflater.inflate(R.layout.message_left, parent, false);
             return new chatViewHolder(view);
         }
       //  return new chatViewHolder(view);
@@ -113,22 +113,35 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
     {
         String msg = chatList.get(position).getMessage();
         String timeStamp = chatList.get(position).getTimestamp();
-        holder.txtMsg.setText(msg);
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(Long.parseLong(timeStamp));
         String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
-        holder.txtTime.setText(dateTime);
+
        // if(left==1)
        // {holder.txtName.setText("testname");}
-        holder.chatImage.setVisibility(View.GONE);
+
         Log.d("bindchumo",chatList.get(position).getSender()+" "+position);
         //String isSeen = chatList.get(position).get;
 
-      /*  Picasso.get()
-                .load(userList.get(position).getUrl())
-                .placeholder(R.color.white)
-                .into(holder.imageViewFav);*/
+        if(chatList.get(position).getType().equals("t"))
+        {
+            holder.txtMsg.setVisibility(View.VISIBLE);
+            holder.txtMsg.setText(msg);
+            holder.chatImage.setVisibility(View.GONE);
+        }
+
+        else if(chatList.get(position).getType().equals("i"))
+        {
+            holder.chatImage.setVisibility(View.VISIBLE);
+            Picasso.get()
+                    .load(chatList.get(position).getMessage())
+                    .placeholder(R.color.white)
+                    .into(holder.chatImage);
+            holder.txtMsg.setVisibility(View.GONE);
+        }
+
+        holder.txtTime.setText(dateTime);
 
 
         /*holder.imgBtnSend.setOnClickListener(new View.OnClickListener() {

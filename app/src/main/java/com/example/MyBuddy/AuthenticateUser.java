@@ -50,7 +50,7 @@ public class AuthenticateUser extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private DatabaseReference userDbRef;
     private Integer flagNewUser;
-    private String uid, name, imageUrl;
+    private String myuid, name, imageUrl;
     TextView txt1;
 
     @Override
@@ -160,29 +160,34 @@ public class AuthenticateUser extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot)
                                 {
+                                    myuid = firebaseUser.getUid();
                                     if ((firebaseUser != null)&&(!snapshot.exists()))
                                     //if ((firebaseUser != null)&&(!snapshot.hasChild(firebaseUser.getUid())))
                                     {
-                                        String uid = firebaseUser.getUid();
+
                                         String name = firebaseUser.getDisplayName();
                                         String email = firebaseUser.getEmail();
                                         String imageUrl = "";
                                         Boolean typing = false;
-                                        user user = new user(uid, name, email, imageUrl, typing, isNewUser);
+                                        user user = new user(myuid, name, email, imageUrl, typing, isNewUser);
                                         //user.isNew = isNewUser;
 
                                         databaseReference = firebaseDatabase.getReference("users");
                                         //databaseReference.push().setValue(user);
-                                        databaseReference.child(uid).setValue(user);
-                                        storeUserData(uid,name,imageUrl);
+                                        databaseReference.child(myuid).setValue(user);
+                                      //  storeUserData(myuid,name,imageUrl);
                                         showToast("Firebase success");
-
                                     }
 
                                     else
                                     {
                                         showToast("User already registered");
                                     }
+
+                                    Intent intentFirst = new Intent(AuthenticateUser.this, topicsListActivity.class);
+                                    intentFirst.putExtra("userId", myuid);
+
+                                    startActivity(intentFirst);
                                 }
 
                                 @Override
@@ -192,9 +197,7 @@ public class AuthenticateUser extends AppCompatActivity {
                                 }
                             });
 
-                            Intent intent = new Intent(AuthenticateUser.this, MessageActivity.class);
-                            startActivity(intent);
-                        }
+                                             }
                         else
                         {
                             Log.w("tt", "signInWithCredential" + task.getException().getMessage());
@@ -230,7 +233,7 @@ public class AuthenticateUser extends AppCompatActivity {
     {
         SharedPreferences sharedPreferences = getSharedPreferences("MyBuddy", MODE_PRIVATE);
         name = sharedPreferences.getString("name", "");
-        uid = sharedPreferences.getString("uid", "");
+        myuid = sharedPreferences.getString("uid", "");
         imageUrl = sharedPreferences.getString("imageUrl", "");
 
 

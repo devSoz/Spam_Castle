@@ -7,9 +7,14 @@
     android:orientation="vertical"
     app:contentPadding="3dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/linearTopic"
+        android:layout_marginRight="100dp"
+        android:layout_gravity="start"
+        android:background="@drawable/rectangle"
+        android:orientation="vertical">
 
 
         <TextView
@@ -17,17 +22,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="His Name"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="18sp" />
-
         <TextView
-            android:id="@+id/txtNewMsg"
+            android:id="@+id/txtTopicUserCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:maxLines="2"
-            android:text="Last Message"
+            android:text="30"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/txtTopicLasttime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:maxLines="2"
+            android:text="30"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/txtTopicCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:maxLines="2"
+            android:text="30 new message"
             android:textColor="@color/black" />
 
         <ImageView
@@ -38,6 +58,6 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/block" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

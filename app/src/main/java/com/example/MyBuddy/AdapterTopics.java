@@ -1,5 +1,6 @@
 package com.example.MyBuddy;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -48,27 +49,31 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
     private String userId, topicId;
     private Integer rowLayout;
     Context context;
-    private String filterPattern="";
+    private String filterPattern="",myuid;
     int left;
 
-    public AdapterTopics(List<Topic> topicList, String userId, Context context, Integer rowLayout)
+    public AdapterTopics(List<Topic> topicList, Context context, Integer rowLayout, String myuid)
     {
+        this.myuid=myuid;
         this.topicList = topicList;
-        this.userId = userId;
         this.context = context;
         this.rowLayout = rowLayout;
     }
     public static class topicViewHolder extends RecyclerView.ViewHolder
     {
-        TextView txtTopicName, txtNewMsg;
+        TextView txtName, txtTopicLasttime,txtUserCount, txtTopicCount;
         ImageView imageTopic;
+        LinearLayout linearTopic;
 
         public topicViewHolder(View view)
         {
             super(view);
-            txtNewMsg = (TextView) view.findViewById(R.id.txtNewMsg);
-            txtTopicName = (TextView) view.findViewById(R.id.txtTopicName);
+            txtName = (TextView) view.findViewById(R.id.txtTopicName);
+            txtUserCount = (TextView) view.findViewById(R.id.txtTopicUserCount);
+            txtTopicCount = (TextView) view.findViewById(R.id.txtTopicCount);
+            txtTopicLasttime = (TextView) view.findViewById(R.id.txtTopicLasttime);
             imageTopic=(ImageView) view.findViewById((R.id.imageTopic));
+            linearTopic = (LinearLayout) view.findViewById(R.id.linearTopic);
         }
     }
 
@@ -86,8 +91,30 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
     {
         String topicName = topicList.get(position).getTopicName();
         String topicImageUrl = topicList.get(position).getImageUrl();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(Long.parseLong(topicList.get(position).getLastchat()));
+        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
+        holder.txtTopicLasttime.setText(dateTime);
+        holder.txtName.setText(topicName);
+        holder.txtTopicCount.setText("30");
+      /*  Picasso.get()
+                .load(topicList.get(position).getImageUrl())
+                .placeholder(R.color.white)
+                .into(holder.imageTopic);*/
+        holder.txtUserCount.setText(String.valueOf(topicList.get(position).getUserId().size()));
+        holder.linearTopic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        holder.txtTopicName.setText(topicName);
+                Intent intent=new Intent(context, MessageActivity.class);
+
+                int pos=holder.getAdapterPosition();
+             //   context.startActivity(new Intent(context, MessageActivity.class));
+                intent.putExtra("userId", myuid);
+                intent.putExtra("topicId", topicList.get(pos).getTopicId());
+                context.startActivity(intent);
+            }
+        });
     }
     @Override
     public int getItemCount () {
