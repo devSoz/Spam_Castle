@@ -140,6 +140,10 @@ public class AdapterSubscribe extends RecyclerView.Adapter<AdapterSubscribe.subs
         return topicList.size();
     }
 
+    public void refreshData()
+    {
+        notifyDataSetChanged();
+    }
     public List<Model3> SubscribeTopic() {
         return hashMap1;
 

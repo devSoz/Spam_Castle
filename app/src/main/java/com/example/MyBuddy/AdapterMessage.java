@@ -123,10 +123,10 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
     {
         if(chatList.get(position).getSender().equals(userId))
         {
-            left=0;
+            left=1;
         }
         else {
-            left = 1;
+            left = 0;
         }
         return left;
     }
@@ -157,16 +157,19 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
                 }
             }
 
-       if(left==1)
+       if(left==0)
        {
            holder.imgBtnSpeak.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-
-                    textToSpeech.speak(holder.txtMsg.toString() ,TextToSpeech.QUEUE_FLUSH,null);
+                   int pos=holder.getAdapterPosition();
+                   String x=chatList.get(pos).getMessage();
+                    textToSpeech.speak( x ,TextToSpeech.QUEUE_FLUSH,null);
                }
            });
        }
+
+
 
 
         Log.d("bindchumo",chatList.get(position).getSender()+" "+position);
@@ -194,12 +197,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         /*holder.imgBtnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) holder.imageViewFav.getDrawable();
-                Bitmap bitmap = bitmapDrawable.getBitmap();
-                String heroDetails=new String("");
-                Integer i = holder.getAdapterPosition();
-               // heroDetails="Name :" + userList.get(i).ge() ;
-              //  shareImageandText(bitmap,heroDetails);
+
             }
         });*/
 

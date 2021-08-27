@@ -69,14 +69,20 @@ public class subscribe_topic extends AppCompatActivity
                     else {
                         if (!(hashMap1.get(i).getValue1().equals(hashMap1.get(i).getValue3()))) {
                             int len=topicList.get(i).getUserId().size()-1;
-                            cnt=topicList.get(i).getUserId().get(len)  ;
-                            cnt=String.valueOf (topicList.get(i).getUserId().size());
-                            dbReference.child(hashMap1.get(i).getKeyval()).child("userId").child(cnt).setValue(myuid);
+                            String tuid=String.valueOf(topicList.get(i).getUserId().size());
+
+                             //topicList.get(i).getUserId().get(len).
+                          //  cnt=String.valueOf (topicList.get(i).getUserId().size());
+                            dbReference.child(hashMap1.get(i).getKeyval()).child("userId").child(tuid).setValue(myuid);
+                           // dbReference.child(hashMap1.get(i).getKeyval()).child("userId").setValue(myuid);
 
                         }
                     }
+                    hashMap1.get(i).setValue1(hashMap1.get(i).getValue3() );
 
-            }}
+            }
+            adapterTopics.refreshData();
+            }
         });
     }
 

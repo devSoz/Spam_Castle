@@ -45,13 +45,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/onlinetv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Online"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
 
             </LinearLayout>
 

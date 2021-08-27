@@ -9,7 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#32AFBF</color>
     <color name="gray">#D5E4D5</color>
-    <color name="bgclr">#3D3F3D</color>
+    <color name="bgclr">#FFFFFF</color>
+    <color name="bgclr1">#A0ABA0</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="light_blue_A200">#FF40C4FF</color>

@@ -37,12 +37,17 @@
     </style>
 
     <style name="titletxt">
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">24dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
     <style name="helptxt">
         <item name="android:textSize">14dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="helptxt2">
+        <item name="android:textSize">12dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
@@ -60,7 +65,7 @@
         <item name="android:textSize">17dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#080808</item>
-        <item name="android:background">@drawable/rectangle</item>
+        <item name="android:background">@drawable/rectangle2</item>
     </style>
 
     <style name="rb">

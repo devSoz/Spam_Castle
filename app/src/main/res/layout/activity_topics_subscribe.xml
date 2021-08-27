@@ -14,15 +14,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <Button
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Subscribe"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
         android:background="@drawable/roundbtn"
         android:id="@+id/btnSubscribe"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_topiclist"
         android:layout_width="match_parent"
-        android:layout_marginTop="100dp"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

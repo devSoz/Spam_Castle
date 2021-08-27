@@ -76,7 +76,7 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
         {
             super(view);
             txtName = (TextView) view.findViewById(R.id.txtTopicName);
-            txtUserCount = (TextView) view.findViewById(R.id.txtTopicUserCount);
+           // txtUserCount = (TextView) view.findViewById(R.id.txtTopicUserCount);
             txtTopicCount = (TextView) view.findViewById(R.id.txtTopicCount);
             txtTopicLasttime = (TextView) view.findViewById(R.id.txtTopicLasttime);
             imageTopic=(ImageView) view.findViewById((R.id.imageTopic));
@@ -103,12 +103,12 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
         String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
         holder.txtTopicLasttime.setText(dateTime);
         holder.txtName.setText(topicName);
-        holder.txtTopicCount.setText("30");
+        holder.txtTopicCount.setText("(30 New Messages)");
       /*  Picasso.get()
                 .load(topicList.get(position).getImageUrl())
                 .placeholder(R.color.white)
                 .into(holder.imageTopic);*/
-        holder.txtUserCount.setText(String.valueOf(topicList.get(position).getUserId().size()));
+     //   holder.txtUserCount.setText(String.valueOf(topicList.get(position).getUserId().size()));
         holder.linearTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +120,7 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
                 intent.putExtra("userId", myuid);
                 intent.putExtra("topicId", topicList.get(pos).getTopicId());
                 intent.putExtra("topicUrl", topicList.get(pos).getImageUrl());
-                intent.putExtra("topicName", topicList.get(pos).getImageUrl());
+                intent.putExtra("topicName", topicList.get(pos).getTopicName());
                 context.startActivity(intent);
             }
         });

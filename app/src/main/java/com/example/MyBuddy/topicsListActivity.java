@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.MyBuddy.Model.Chat;
 import com.example.MyBuddy.Model.Topic;
@@ -53,8 +54,6 @@ public class topicsListActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
-
-
                 intent.putExtra("userId", myuid);
                 startActivity(intent);
             }
@@ -101,6 +100,7 @@ public class topicsListActivity extends AppCompatActivity
                 }
                 adapterTopics = new AdapterTopics(topicList, topicsListActivity.this, R.layout.topics_list,myuid);
                 recyclerViewTopic.setAdapter(adapterTopics);
+                Toast.makeText(topicsListActivity.this, "Successfully subscribed to selected topics",Toast.LENGTH_SHORT ).show();;
             }
 
             @Override

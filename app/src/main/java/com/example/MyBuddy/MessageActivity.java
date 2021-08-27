@@ -189,7 +189,7 @@ public class MessageActivity extends AppCompatActivity {
                 .into(tvTopicUrl);
         ImageButton msgSend = findViewById(R.id.sendmsg);
         ImageButton attachImage = findViewById(R.id.attachbtn);
-        tvTopicName = tvTopicName;
+        tvTopicName.setText(mytopicName);
 
         msgSend.setOnClickListener(new View.OnClickListener()
         {
@@ -197,7 +197,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 String message = String.valueOf(msgText.getText());
-                if (message !="") {
+                if (!message.equals("")) {
                     dbReference = FirebaseDatabase.getInstance().getReference("chat");
                     String timeStamp = "" + System.currentTimeMillis();
                     Chat chat = new Chat(message, mytopic, myuid, "t", timeStamp);
