@@ -21,9 +21,12 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.MyBuddy.Model.Chat;
+import com.example.MyBuddy.Model.Topic;
 import com.example.MyBuddy.Model.user;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -65,6 +69,7 @@ public class MessageActivity extends AppCompatActivity {
     private String storagePermission[];
     private Boolean notify;
     private Uri imageUri;
+    public List<Topic> topicList;
     private static final int IMAGEPICK_GALLERY_REQUEST = 300;
     private static final int IMAGE_PICKCAMERA_REQUEST = 400;
     private static final int CAMERA_REQUEST = 100;
@@ -87,10 +92,91 @@ public class MessageActivity extends AppCompatActivity {
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         getData();
+        getTopics();
         messageAlert();
         getUserList();
         getChatData();
     }
+/*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+      //  for (int i = 0; i < list.size(); i++) {
+
+        menu.add(0, 1, 0, "Menu Name").setShortcut('5', 'c');
+        menu.add(0, 2, 0, "Menu Name").setShortcut('5', 'c');
+       // }
+
+        return true;
+    }*/
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
+        int i = 0;
+        for (Topic t : topicList) {
+            menu.add(0, i, 0, t.getTopicName());
+            i++;
+        }
+        return true;
+    //    return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+  /*  @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        int i = 0;
+        for (Topic t : topicList) {
+            menu.add(0, i, 0, t.getTopicName());
+            i++;
+        }
+     return true;
+
+    }*/
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId(); //to get the selected menu id
+        //String name = item.getTitle(); //to get the selected menu name
+        Toast.makeText(getApplicationContext(),topicList.get(id).getTopicName() ,Toast.LENGTH_LONG).show();
+
+
+                return super.onOptionsItemSelected(item);
+
+    }
+
+    public void getTopics()
+    {
+        topicList = new ArrayList<Topic>();
+        dbReference = FirebaseDatabase.getInstance().getReference("Topics");
+        dbReference.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                topicList.clear();
+
+                for(DataSnapshot snapshot1 : snapshot.getChildren())
+                {
+
+                    Topic topic = snapshot1.getValue(Topic.class);
+                    if(topic.getUserId().contains(myuid))
+                    {
+                        topicList.add(topic);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+
+            }
+        });
+    }
+
 
     public void messageAlert()
     {

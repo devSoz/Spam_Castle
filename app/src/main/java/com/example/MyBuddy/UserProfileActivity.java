@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.MyBuddy.Model.Chat;
 import com.example.MyBuddy.Model.Topic;
-import com.example.MyBuddy.Model.UserID;
+import com.example.MyBuddy.Model.user;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,66 +25,54 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class topicsListActivity extends AppCompatActivity
-{
+public class UserProfileActivity extends AppCompatActivity {
+
     public FirebaseDatabase firebaseDatabase;
     public DatabaseReference dbReference;
     public List<Topic> topicList;
-    public RecyclerView recyclerViewTopic;
-    public AdapterTopics adapterTopics;
+    public user user1;
+    Query userqry;
     public String myuid;
     private Context context;
-    Button btnClick;
+    private TextView tvusername,tvemailid, tvtopiccount;
+    private ImageView tvprofilepic;
+    private Button btnSubscribe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topics_list);
-        btnClick=findViewById(R.id.btnclick);
-        recyclerViewTopic = (RecyclerView) findViewById(R.id.recycler_view_topics);
-        recyclerViewTopic.setLayoutManager(new LinearLayoutManager(this));
-        context = getApplicationContext();
 
-        getUserId();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.user_profile);
+       tvusername=findViewById(R.id.userusername);
+        tvemailid=findViewById(R.id.useruseremail1);
+        tvprofilepic=findViewById(R.id.useruserprofilepic);
+        tvtopiccount=findViewById(R.id.userusertopic);
+        btnSubscribe=findViewById(R.id.userusersubscribe);
         getAllTopics();
-        btnClick.setOnClickListener(new View.OnClickListener() {
+        getUserDetails();
+        btnSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(), subscribe_topic.class);
 
 
                 intent.putExtra("userId", myuid);
                 startActivity(intent);
             }
         });
+
     }
 
     private void getAllTopics()
     {
-      /*  dbReference = FirebaseDatabase.getInstance().getReference("Topics");
-        List<String> usersid= new ArrayList<String>();
-        usersid.add("dcLgBgvDLhNkprfbOHayJXdDQYY2");
-        usersid.add(myuid);
-
-        String timeStamp = "" + System.currentTimeMillis();
-        Topic topic = new Topic("Recipes", "Topic1 desc",
-                "","Topic1",timeStamp,timeStamp ,usersid);
-        dbReference.child("Topic1").setValue(topic);
-         topic = new Topic("Gardending", "Topic2 desc",
-                "","Topic2",timeStamp,timeStamp ,usersid);
-
-        dbReference.child("Topic2").setValue(topic);
-         topic = new Topic("Chuma Topic", "Topic3 desc",
-                "","Topic3",timeStamp,timeStamp ,usersid);
-
-        dbReference.child("Topic3").setValue(topic);
-*/
-        topicList = new ArrayList<Topic>();
+      topicList = new ArrayList<Topic>();
         dbReference = FirebaseDatabase.getInstance().getReference("Topics");
 
         dbReference.addValueEventListener( new ValueEventListener() {
@@ -91,16 +82,13 @@ public class topicsListActivity extends AppCompatActivity
 
                 for(DataSnapshot snapshot1 : snapshot.getChildren())
                 {
-
                     Topic topic = snapshot1.getValue(Topic.class);
                     if(topic.getUserId().contains(myuid))
                     {
-                        topicList.add(topic);}
-
+                        topicList.add(topic);
+                    }
 
                 }
-                adapterTopics = new AdapterTopics(topicList, topicsListActivity.this, R.layout.topics_list,myuid);
-                recyclerViewTopic.setAdapter(adapterTopics);
             }
 
             @Override
@@ -111,10 +99,34 @@ public class topicsListActivity extends AppCompatActivity
         });
     }
 
-    public void getUserId()
+    public void getUserDetails()
     {
         Intent intent = getIntent();
         myuid = intent.getStringExtra("userId");
-    }
 
+        userqry = FirebaseDatabase.getInstance().getReference("users").child(myuid);
+        userqry.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user1 = snapshot.getValue(user.class);
+                tvusername.setText(user1.getuserName());
+                tvemailid.setText(user1.getEmail());
+                Picasso.get()
+                        .load(user1.getUserImageUrl())
+                        .placeholder(R.color.white)
+                        .into(tvprofilepic);
+                tvtopiccount.setText(String.valueOf(topicList.size()));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
+
+
+
+
+    }
 }

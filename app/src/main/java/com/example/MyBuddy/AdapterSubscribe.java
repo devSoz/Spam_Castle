@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -34,6 +36,7 @@ import java.util.List;
 import androidx.core.content.FileProvider;
 
 import com.example.MyBuddy.Model.Chat;
+import com.example.MyBuddy.Model.Model3;
 import com.example.MyBuddy.Model.Topic;
 import com.example.MyBuddy.Model.user;
 import com.google.firebase.database.DataSnapshot;
@@ -48,10 +51,11 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewHolder>
+public class AdapterSubscribe extends RecyclerView.Adapter<AdapterSubscribe.subscribeViewHolder>
 {
     private List<Topic> topicList= new ArrayList<Topic>();
     private List<Topic> topicListFull= new ArrayList<Topic>();
+    public List<Model3> hashMap1=new ArrayList<Model3>();
     private String userId, topicId;
     private Integer rowLayout;
     private TextToSpeech textToSpeech;
@@ -59,105 +63,86 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
     private String filterPattern="",myuid,topicUrl="";
     int left;
 
-    public AdapterTopics(List<Topic> topicList, Context context, Integer rowLayout, String myuid)
+    public AdapterSubscribe(List<Topic> topicList,List<Model3> hashMap1, Context context, Integer rowLayout, String myuid)
     {
         this.myuid=myuid;
         this.topicList = topicList;
+        this.hashMap1 = hashMap1;
         this.context = context;
         this.rowLayout = rowLayout;
     }
-    public static class topicViewHolder extends RecyclerView.ViewHolder
+    public static class subscribeViewHolder extends RecyclerView.ViewHolder
     {
-        TextView txtName, txtTopicLasttime,txtUserCount, txtTopicCount;
-        ImageView imageTopic;
+        TextView txtName, txtTopicLasttime,txtUserCount, txtTopicCount,txtDesc;
+        ImageView imageSubscribe;
+        CheckBox chkTopic;
         LinearLayout linearTopic;
 
-        public topicViewHolder(View view)
+        public subscribeViewHolder(View view)
         {
             super(view);
             txtName = (TextView) view.findViewById(R.id.txtTopicName);
+            txtDesc = (TextView) view.findViewById(R.id.txtTopicDesc);
             txtUserCount = (TextView) view.findViewById(R.id.txtTopicUserCount);
-            txtTopicCount = (TextView) view.findViewById(R.id.txtTopicCount);
+            imageSubscribe = (ImageView) view.findViewById(R.id.imageTopic);
             txtTopicLasttime = (TextView) view.findViewById(R.id.txtTopicLasttime);
-            imageTopic=(ImageView) view.findViewById((R.id.imageTopic));
+            chkTopic=(CheckBox) view.findViewById((R.id.chkTopic));
             linearTopic = (LinearLayout) view.findViewById(R.id.linearTopic);
         }
     }
 
     @Override
-    public AdapterTopics.topicViewHolder onCreateViewHolder(ViewGroup parent,
-                                                            int viewType) {
+    public AdapterSubscribe.subscribeViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                   int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         Log.d("viewchumo", String.valueOf(viewType));
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
-        return new topicViewHolder(view);
+        return new subscribeViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(topicViewHolder holder, final int position)
+    public void onBindViewHolder(subscribeViewHolder holder, final int position)
     {
-        String topicName = topicList.get(position).getTopicName();
-        String topicImageUrl = topicList.get(position).getImageUrl();
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(Long.parseLong(topicList.get(position).getLastchat()));
         String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
+
+
+        holder.txtName.setText(topicList.get(position).getTopicName());
+        holder.txtDesc.setText(topicList.get(position).getDescription());
+        holder.txtUserCount.setText(hashMap1.get(position).getValue2().toString());
         holder.txtTopicLasttime.setText(dateTime);
-        holder.txtName.setText(topicName);
-        holder.txtTopicCount.setText("30");
-      /*  Picasso.get()
+        if(hashMap1.get(position).getValue1().equals("Yes"))
+            holder.chkTopic.setChecked(true);
+        else
+            holder.chkTopic.setChecked(false);
+
+        String topicImageUrl = topicList.get(position).getImageUrl();
+        Picasso.get()
                 .load(topicList.get(position).getImageUrl())
                 .placeholder(R.color.white)
-                .into(holder.imageTopic);*/
+                .into(holder.imageSubscribe);
         holder.txtUserCount.setText(String.valueOf(topicList.get(position).getUserId().size()));
-        holder.linearTopic.setOnClickListener(new View.OnClickListener() {
+        holder.chkTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent=new Intent(context, MessageActivity.class);
-
-                int pos=holder.getAdapterPosition();
-             //   context.startActivity(new Intent(context, MessageActivity.class));
-                intent.putExtra("userId", myuid);
-                intent.putExtra("topicId", topicList.get(pos).getTopicId());
-                intent.putExtra("topicUrl", topicList.get(pos).getImageUrl());
-                intent.putExtra("topicName", topicList.get(pos).getImageUrl());
-                context.startActivity(intent);
+                if(holder.chkTopic.isChecked())
+                    hashMap1.get(holder.getAdapterPosition()).setValue3("Yes");
+                else
+                    hashMap1.get(holder.getAdapterPosition()).setValue3("No");
             }
-        });
+        }) ;
+
+
     }
     @Override
     public int getItemCount () {
         return topicList.size();
     }
 
-    private void shareImageandText(Bitmap bitmap, String heroName) {
-        Uri uri = getmageToShare(bitmap);
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.putExtra(Intent.EXTRA_TEXT, heroName);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Share");
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setType("image/*");
+    public List<Model3> SubscribeTopic() {
+        return hashMap1;
 
-        context.startActivity(Intent.createChooser(intent, "Share Via"));
-    }
-
-    private Uri getmageToShare(Bitmap bitmap) {
-        File imagefolder = new File(context.getCacheDir(), "images");
-        Uri uri = null;
-        try {
-            imagefolder.mkdirs();
-            File file = new File(imagefolder, "shared_image.png");
-            FileOutputStream outputStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
-            outputStream.flush();
-            outputStream.close();
-            uri = FileProvider.getUriForFile(context, "com.example.myapplication", file);
-        } catch (Exception e) {
-
-            Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        return uri;
     }
 
 

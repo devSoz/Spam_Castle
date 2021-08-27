@@ -68,7 +68,14 @@
             />
 
     </LinearLayout>
-
+    <ImageButton
+        android:id="@+id/imgSpeak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_speak"
+        android:visibility="gone"
+        />
     <TextView
         android:id="@+id/txtIsSeen"
         android:layout_width="match_parent"

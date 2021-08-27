@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.speech.tts.TextToSpeech;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +55,8 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
     Context context;
     private String filterPattern="";
     int left;
+    TextToSpeech textToSpeech;
+
 
     public AdapterMessage(List<user> userList, List<Chat> chatList, String userId, Context context, String topicId)
     {
@@ -61,7 +64,16 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         this.userList = userList;
         this.userId = userId;
         this.context = context;
-        this.topicId = topicId;
+
+        textToSpeech = new TextToSpeech(this.context , new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+
+                if(i!=TextToSpeech.ERROR){
+                    textToSpeech.setLanguage(Locale.UK);
+                }
+            }
+        });
     }
 
     public static class chatViewHolder extends RecyclerView.ViewHolder
@@ -69,6 +81,8 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         TextView txtTime, txtMsg, txtIsSeen, txtUserName;
         CircleImageView imageProfile;
         ImageView chatImage;
+        ImageButton imgBtnSpeak;
+
 
         public chatViewHolder(View view)
         {
@@ -79,6 +93,11 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
             txtTime = (TextView) view.findViewById(R.id.txtTime);
             txtUserName = (TextView) view.findViewById(R.id.txtUserName);
             chatImage=(ImageView) view.findViewById((R.id.images));
+            imgBtnSpeak=(ImageButton) view.findViewById((R.id.imgSpeak));
+
+
+
+
         }
     }
 
@@ -138,7 +157,16 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
                 }
             }
 
-        //Integer posUser = userList.indexOf(userId);
+       if(left==1)
+       {
+           holder.imgBtnSpeak.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+
+                    textToSpeech.speak(holder.txtMsg.toString() ,TextToSpeech.QUEUE_FLUSH,null);
+               }
+           });
+       }
 
 
         Log.d("bindchumo",chatList.get(position).getSender()+" "+position);
