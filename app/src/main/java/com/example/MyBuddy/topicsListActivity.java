@@ -100,8 +100,7 @@ public class topicsListActivity extends AppCompatActivity
                 }
                 adapterTopics = new AdapterTopics(topicList, topicsListActivity.this, R.layout.topics_list,myuid);
                 recyclerViewTopic.setAdapter(adapterTopics);
-                Toast.makeText(topicsListActivity.this, "Successfully subscribed to selected topics",Toast.LENGTH_SHORT ).show();;
-            }
+                    }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error)

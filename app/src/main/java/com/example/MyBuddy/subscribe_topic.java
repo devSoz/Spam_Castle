@@ -10,6 +10,7 @@ package com.example.MyBuddy;
         import android.os.Bundle;
         import android.view.View;
         import android.widget.Button;
+        import android.widget.Toast;
 
         import com.example.MyBuddy.Model.Model3;
         import com.example.MyBuddy.Model.Topic;
@@ -82,6 +83,8 @@ public class subscribe_topic extends AppCompatActivity
 
             }
             adapterTopics.refreshData();
+            Toast.makeText(subscribe_topic.this, "Successfully subscribed to selected topics",Toast.LENGTH_SHORT ).show();;
+
             }
         });
     }

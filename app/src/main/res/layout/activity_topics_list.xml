@@ -19,9 +19,8 @@
       <androidx.recyclerview.widget.RecyclerView
           android:layout_marginTop="10dp"
         android:id="@+id/recycler_view_topics"
-          android:background="@color/purple_500"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
 
 

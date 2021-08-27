@@ -64,7 +64,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private Context context;
     private TextView tvusername,tvemailid, tvtopiccount;
     private ImageView tvprofilepic;
-    private Button btnSubscribe;
+    private Button btnSubscribe, btnadd ;
     private ImageButton btnupload;
     private String cameraPermission[];
     private String storagePermission[];
@@ -82,12 +82,13 @@ public class UserProfileActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-       tvusername=findViewById(R.id.userusername);
+        tvusername=findViewById(R.id.userusername);
         tvemailid=findViewById(R.id.useruseremail1);
         tvprofilepic=findViewById(R.id.useruserprofilepic);
         tvtopiccount=findViewById(R.id.userusertopic);
         btnSubscribe=findViewById(R.id.userusersubscribe);
         btnupload=findViewById(R.id.useruserupload);
+        btnadd=findViewById(R.id.btnadduser);
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -95,8 +96,18 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), subscribe_topic.class);
-              intent.putExtra("userId", myuid);
+                intent.putExtra("userId", myuid);
                 startActivity(intent);
+            }
+        });
+        btnadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    saveUserProfile(imageUri );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -312,13 +323,15 @@ public class UserProfileActivity extends AppCompatActivity {
             }
     }
 
-    private void sendImageMsg(Uri imageuri) throws IOException
-    {
+    private void sendImageMsg(Uri imageuri) throws IOException {
 
         tvprofilepic.setImageURI(imageuri);
-      /*  notify = true;
+    }
+
+    private void saveUserProfile(Uri imageuri ) throws IOException {
+        //  notify = true;
         final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Sending Image");
+        dialog.setMessage("Saving your details");
         dialog.show();
 
         final String timestamp = "" + System.currentTimeMillis();
@@ -336,22 +349,28 @@ public class UserProfileActivity extends AppCompatActivity {
                 while (!uriTask.isSuccessful()) ;
                 String downloadUri = uriTask.getResult().toString(); // getting url if task is successful
 
-                if (uriTask.isSuccessful())
-                {
-                    DatabaseReference re = FirebaseDatabase.getInstance().getReference();
+                if (uriTask.isSuccessful()) {
 
-                    String message = downloadUri;
-                    dbReference = FirebaseDatabase.getInstance().getReference("chat");
+                    dbReference = FirebaseDatabase.getInstance().getReference("users");
                     String timeStamp = "" + System.currentTimeMillis();
-                    Chat chat = new Chat(message, mytopic, myuid, "i", timeStamp);
-                    dbReference.child(mytopic).push().setValue(chat);
-                      }
+
+                    String name = tvusername.getText().toString();
+
+
+                    String imageUrl = "gs://my-buddy-c3898.appspot.com/ChatImages/post1630077330561";
+                    Boolean typing = false;
+                    user user = new user(myuid, name, tvemailid.getText().toString(), downloadUri, typing, false);
+                    dbReference.child(myuid).setValue(user);
+
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d("Chumo bad", String.valueOf(e));
             }
-        });*/
+        });
+        Toast.makeText(UserProfileActivity.this, "Profile details updated",Toast.LENGTH_SHORT ).show();;
+
     }
-}
+    }

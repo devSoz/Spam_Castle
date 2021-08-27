@@ -232,7 +232,7 @@ public class AuthenticateUser extends AppCompatActivity {
 
                                         String name = firebaseUser.getDisplayName();
                                         String email = firebaseUser.getEmail();
-                                        String imageUrl = "";
+                                        String imageUrl = "gs://my-buddy-c3898.appspot.com/ChatImages/post1630077330561";
                                         Boolean typing = false;
                                         user user = new user(myuid, name, email, imageUrl, typing, isNewUser);
                                         //user.isNew = isNewUser;

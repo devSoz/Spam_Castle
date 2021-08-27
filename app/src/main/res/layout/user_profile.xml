@@ -18,6 +18,13 @@
         style="@style/titletxt"
         android:layout_marginTop="50dp"
         android:layout_gravity="center_horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+
+        android:background="@drawable/roundborder"
+        android:orientation="vertical">
 
     <EditText
         android:id="@+id/userusername"
@@ -69,10 +76,11 @@
         <ImageButton
             android:id="@+id/useruserupload"
             android:layout_width="wrap_content"
-            android:layout_height="12dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="40dp"
+
             android:layout_weight="1"
             android:focusable="true"
             android:fontFamily="sans-serif"
@@ -115,20 +123,22 @@
             android:layout_marginRight="40dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:textColor="#1C1D20"
             android:textSize="13dp"
             android:background="@drawable/roundbtn"
             android:gravity="center"/>
     </LinearLayout>
+    </LinearLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Update"
-        android:id="@+id/create"
+        android:id="@+id/btnadduser"
         android:textAllCaps="false"
         android:layout_marginRight="40dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="20dp"
         android:textColor="#1B1D21"
         android:textSize="20dp"
         android:background="@drawable/roundbtn"
