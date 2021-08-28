@@ -3,6 +3,7 @@ package com.example.MyBuddy;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -24,12 +26,21 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.Html;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +85,7 @@ public class MessageActivity extends AppCompatActivity {
     private static final int IMAGE_PICKCAMERA_REQUEST = 400;
     private static final int CAMERA_REQUEST = 100;
     private static final int STORAGE_REQUEST = 200;
+    private PopupWindow popup;
 
 
     @Override
@@ -114,10 +126,12 @@ public class MessageActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
         int i = 0;
-        for (Topic t : topicList) {
+       /* for (Topic t : topicList) {
             menu.add(0, i, 0, t.getTopicName());
             i++;
-        }
+        }*/
+        menu.add(0,1,0,"Subscribed Users");
+        menu.add(0,1,0,"Signout");
         return true;
     //    return super.onCreateOptionsMenu(menu);
     }
@@ -140,13 +154,60 @@ public class MessageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId(); //to get the selected menu id
-        //String name = item.getTitle(); //to get the selected menu name
+
+        String menuname = item.getTitle().toString() ; //to get the selected menu name
+        switch  (id)
+        {
+            case 1:
+            {
+                //show list of users
+                showUsers();
+                break;
+            }
+            case 2:
+            {
+                //signout
+                break;
+            }
+
+        }
         Toast.makeText(getApplicationContext(),topicList.get(id).getTopicName() ,Toast.LENGTH_LONG).show();
-
-
-                return super.onOptionsItemSelected(item);
+              return super.onOptionsItemSelected(item);
 
     }
+
+    public void showUsers()
+    {
+        RelativeLayout rel = (RelativeLayout) findViewById(R.id.mainlay) ;
+
+
+                    Display display = getWindowManager().getDefaultDisplay();
+
+                    // Load the resolution into a Point object
+                    Point size = new Point();
+
+                    display.getSize(size);
+                    LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View custview = inflater.inflate(R.layout.popup, null);
+                    popup = new PopupWindow(custview, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    TextView tv = custview.findViewById(R.id.tv);
+                    String msg="";
+                    for(int i=0;i<userList.size();i++)
+                    {
+
+                    }
+                    tv.setText(Html.fromHtml("15 mines as per difficulty.</li><br>" ));
+                    ImageButton btnclose =  custview.findViewById(R.id.btnclose);
+                    btnclose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            popup.dismiss();
+                        }
+                    });
+        popup.showAtLocation(rel, Gravity.NO_GRAVITY, 10, 10);
+        popup.update(50, 50, size.x-100, size.y-100);
+                }
+
 
     public void getTopics()
     {
