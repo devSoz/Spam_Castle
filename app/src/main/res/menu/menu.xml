@@ -2,12 +2,20 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/aboutMenu"
-        android:title="About" />
+        android:id="@+id/chat"
+        android:title="Chat"
+        android:icon="@drawable/ic_chat"/>
+
     <item
-        android:id="@+id/helpMenu"
-        android:title="Help" />
+        android:id="@+id/topic"
+        android:title="Subscribe"
+        android:icon="@drawable/ic_subscribe"/>
     <item
-        android:id="@+id/signOutMenu"
-        android:title="Sign Out" />
+        android:id="@+id/setting"
+        android:title="Settings"
+        android:icon="@drawable/ic_setting"/>
+    <item
+        android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/person"/>
 </menu>

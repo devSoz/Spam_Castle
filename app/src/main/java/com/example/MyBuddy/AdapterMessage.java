@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,13 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import androidx.core.content.FileProvider;
@@ -140,10 +146,16 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         String sender=chatList.get(position).getSender();
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(Long.parseLong(timeStamp));
-        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
 
 
-            for (int i = 0; i < userList.size(); i++) {
+        String dateTime;
+        if(isToday(calendar.getTime()))
+            dateTime= DateFormat.format("hh:mm aa", calendar).toString();
+        else
+            dateTime= DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
+
+
+        for (int i = 0; i < userList.size(); i++) {
                 if (userList.get(i).getuid().equals(sender)) {
                     userName = userList.get(i).getuserName();
                     userImageUrl = userList.get(i).getUserImageUrl();
@@ -253,6 +265,15 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.chatView
         notifyDataSetChanged();
     }
 
+    private boolean isToday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        Calendar toCompare = Calendar.getInstance();
+        toCompare.setTimeInMillis(date.getTime());
+
+        return calendar.get(Calendar.YEAR) == toCompare.get(Calendar.YEAR)
+                && calendar.get(Calendar.MONTH) == toCompare.get(Calendar.MONTH)
+                && calendar.get(Calendar.DAY_OF_MONTH) == toCompare.get(Calendar.DAY_OF_MONTH);
+    }
 
     private void shareImageandText(Bitmap bitmap, String heroName) {
         Uri uri = getmageToShare(bitmap);

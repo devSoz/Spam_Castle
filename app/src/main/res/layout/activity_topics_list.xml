@@ -9,15 +9,30 @@
     android:orientation="vertical"
     tools:context=".MessageActivity">
 
-
-      <Button
-          android:layout_width="100dp"
-          android:layout_height="100dp"
-          android:text="User Profile"
-          android:layout_gravity="center"
-            android:id="@+id/btnclick"/>
+      <TextView
+          android:id="@+id/txtHeader"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="4dp"
+          android:layout_gravity="center_horizontal"
+          android:text="Subscribed Topics"
+          android:padding="5dp"
+          android:textColor="@color/black"
+          android:textSize="22sp" />
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="4dp"
+          android:layout_gravity="center_horizontal"
+          android:text="Select a topic to discuss"
+          style="@style/helptxt2"
+          android:padding="5dp"
+          android:textColor="@color/txthelp"
+          />
       <androidx.recyclerview.widget.RecyclerView
-          android:layout_marginTop="10dp"
+          android:padding="5dp"
+          android:background="@color/bgclr"
+          android:backgroundTint="@color/bgclr"
         android:id="@+id/recycler_view_topics"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

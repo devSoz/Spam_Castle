@@ -7,144 +7,105 @@
     android:background="@color/bgclr"
     tools:context=".UserProfileActivity">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Update profile"
-        style="@style/titletxt"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center_horizontal"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-
-        android:background="@drawable/roundborder"
+        android:layout_height="match_parent"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update profile"
+            style="@style/titletxt"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
 
-    <EditText
-        android:id="@+id/userusername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="40dp"
-        android:hint="Profile Name"
-        android:textColor="#1C1D20"
-        android:textCursorDrawable="@null"
-        android:textSize="16dp"
-        android:inputType="text"
-        android:drawableStart="@drawable/ic_users"
-        android:drawablePadding="5dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="35dp"
-        android:gravity="start"/>
+            android:background="@drawable/roundborder"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textCursorDrawable="@null"
-        android:textColor="#1C1D20"
-        android:drawablePadding="5dp"
-        android:textSize="16dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/useruseremail1"
-        android:drawableStart="@drawable/ic_email"
-        android:gravity="start" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:textCursorDrawable="@null"
-            android:textColorHint="#131519"
-            android:drawablePadding="5dp"
-            android:layout_weight="4"
-            android:textSize="16dp"
-            android:id="@+id/useruserprofilepic"
+            <EditText
+                android:id="@+id/userusername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
+                android:hint="Profile Name"
+                android:textColor="#111113"
+                android:textCursorDrawable="@null"
+                android:textSize="16dp"
+                android:inputType="text"
+                android:drawableStart="@drawable/ic_users"
+                android:drawablePadding="5dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="35dp"
+                android:gravity="start"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@null"
+                android:textColor="#1C1D20"
+                android:drawablePadding="5dp"
+                android:textSize="16dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/useruseremail1"
+                android:drawableStart="@drawable/ic_email"
+                android:gravity="start" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:textCursorDrawable="@null"
+                    android:textColorHint="#131519"
+                    android:drawablePadding="5dp"
+                    android:layout_weight="4"
+                    android:textSize="16dp"
+                    android:id="@+id/useruserprofilepic"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/person"
+                    android:gravity="start" />
+
+                <ImageButton
+                    android:id="@+id/useruserupload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="40dp"
+
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif"
+                    android:src="@drawable/attach"
+                    android:textColor="#0F1012"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:id="@+id/btnadduser"
+            android:textAllCaps="false"
             android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/person"
-            android:gravity="start" />
-
-        <ImageButton
-            android:id="@+id/useruserupload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="40dp"
-
-            android:layout_weight="1"
-            android:focusable="true"
-            android:fontFamily="sans-serif"
-            android:src="@drawable/attach"
-            android:textColor="#0F1012"
-            android:textSize="16dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Subscribed Topics: "
-      android:textColorHint="#1C1D20"
-            android:textCursorDrawable="@null"
-            android:textSize="16dp"
-        android:drawablePadding="5dp"
-        android:layout_marginRight="7dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:gravity="start" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/userusertopic"
-        android:textColor="#1C1D20"
-        android:textSize="16dp"
-        android:focusable="true" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Manage"
-            android:id="@+id/userusersubscribe"
-            android:textAllCaps="false"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="#1C1D20"
-            android:textSize="13dp"
+            android:textColor="#1B1D21"
+            android:textSize="20dp"
             android:background="@drawable/roundbtn"
             android:gravity="center"/>
-    </LinearLayout>
-    </LinearLayout>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Update"
-        android:id="@+id/btnadduser"
-        android:textAllCaps="false"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="20dp"
-        android:textColor="#1B1D21"
-        android:textSize="20dp"
-        android:background="@drawable/roundbtn"
-        android:gravity="center"/>
 
-</LinearLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

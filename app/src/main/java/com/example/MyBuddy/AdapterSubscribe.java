@@ -122,7 +122,7 @@ public class AdapterSubscribe extends RecyclerView.Adapter<AdapterSubscribe.subs
                 .load(topicList.get(position).getImageUrl())
                 .placeholder(R.color.white)
                 .into(holder.imageSubscribe);
-        holder.txtUserCount.setText(String.valueOf(topicList.get(position).getUserId().size()));
+        holder.txtUserCount.setText(" (" + String.valueOf(topicList.get(position).getUserId().size()) + " users)");
         holder.chkTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

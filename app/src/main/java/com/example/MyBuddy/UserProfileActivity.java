@@ -1,7 +1,14 @@
 package com.example.MyBuddy;
 
+import static android.app.Activity.RESULT_OK;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +28,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -53,7 +62,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends Fragment {
 
     public FirebaseDatabase firebaseDatabase;
     public DatabaseReference dbReference;
@@ -76,30 +85,43 @@ public class UserProfileActivity extends AppCompatActivity {
     private static final int STORAGE_REQUEST = 200;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public static UserProfileActivity newInstance(String param1, String param2) {
+        UserProfileActivity fragment = new UserProfileActivity();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_profile);
-        tvusername=findViewById(R.id.userusername);
-        tvemailid=findViewById(R.id.useruseremail1);
-        tvprofilepic=findViewById(R.id.useruserprofilepic);
-        tvtopiccount=findViewById(R.id.userusertopic);
-        btnSubscribe=findViewById(R.id.userusersubscribe);
-        btnupload=findViewById(R.id.useruserupload);
-        btnadd=findViewById(R.id.btnadduser);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        tvusername= view.findViewById(R.id.userusername);
+        tvemailid=view.findViewById(R.id.useruseremail1);
+        tvprofilepic=view.findViewById(R.id.useruserprofilepic);
+
+        btnupload=view.findViewById(R.id.useruserupload);
+        btnadd=view.findViewById(R.id.btnadduser);
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        btnSubscribe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), subscribe_topic.class);
-                intent.putExtra("userId", myuid);
-                startActivity(intent);
-            }
-        });
+
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,16 +142,27 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
-    protected void onResume() {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+        super.onCreate(savedInstanceState);
+      //  setContentView(R.layout.user_profile);
+
+
+        return inflater.inflate(R.layout.user_profile, container, false);
+    }
+
+
+    /*@Override
+    public void onResume() {
         if(!flag) {
             getAllTopics();
             getUserDetails();
         }
         flag=true;
         super.onResume();
-    }
+    }*/
 
     private void getAllTopics()
     {
@@ -162,7 +195,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     public void getUserDetails()
     {
-        Intent intent = getIntent();
+        Intent intent = getActivity().getIntent();
         myuid = intent.getStringExtra("userId");
 
         userqry = FirebaseDatabase.getInstance().getReference("users").child(myuid);
@@ -176,7 +209,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         .load(user1.getUserImageUrl())
                         .placeholder(R.color.white)
                         .into(tvprofilepic);
-                tvtopiccount.setText(String.valueOf(topicList.size()));
+
 
             }
 
@@ -194,7 +227,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private void showImage()
     {
         String options[] = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Pick Image From");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -233,7 +266,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     if (camera_accepted && writeStorageaccepted) {
                         getFromCamera(); // if access granted then click
                     } else {
-                        Toast.makeText(this, "Please Enable Camera and Storage Permissions", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please Enable Camera and Storage Permissions", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -244,7 +277,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     if (writeStorageaccepted) {
                         getFromGallery(); // if access granted then pick
                     } else {
-                        Toast.makeText(this, "Please Enable Storage Permissions", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please Enable Storage Permissions", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -254,7 +287,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         if (resultCode == RESULT_OK)
         {
@@ -283,8 +316,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
     private Boolean checkPerforCamera() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+        boolean result1 = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return result && result1;
     }
 
@@ -293,7 +326,7 @@ public class UserProfileActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put(MediaStore.Images.Media.TITLE, "Temp_pic");
         contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Temp Description");
-        imageUri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+        imageUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
         Intent camerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         camerIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(camerIntent, IMAGE_PICKCAMERA_REQUEST);
@@ -306,7 +339,7 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivityForResult(galleryIntent, IMAGEPICK_GALLERY_REQUEST);
     }
     private Boolean checkPerforStorage() {
-        boolean result = ContextCompat.checkSelfPermission(UserProfileActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return result;
     }
 
@@ -330,13 +363,13 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void saveUserProfile(Uri imageuri ) throws IOException {
         //  notify = true;
-        final ProgressDialog dialog = new ProgressDialog(this);
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Saving your details");
         dialog.show();
 
         final String timestamp = "" + System.currentTimeMillis();
         String filepathandname = "ChatImages/" + "post" + timestamp; // filename
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageuri);
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageuri);
         ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, arrayOutputStream); // compressing the image using bitmap
         final byte[] data = arrayOutputStream.toByteArray();
@@ -370,7 +403,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 Log.d("Chumo bad", String.valueOf(e));
             }
         });
-        Toast.makeText(UserProfileActivity.this, "Profile details updated",Toast.LENGTH_SHORT ).show();;
+        Toast.makeText(getContext(), "Profile details updated",Toast.LENGTH_SHORT ).show();;
 
     }
     }

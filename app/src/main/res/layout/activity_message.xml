@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgclr"
     android:id="@+id/mainlay"
     tools:context=".MessageActivity">
 
@@ -12,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/primary"
+        android:background="@color/titlebar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <LinearLayout
@@ -49,13 +50,7 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/showusers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="5dp"
-                android:src="@drawable/block" />
+
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -72,14 +67,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/teal_200"
+        android:background="@color/titlebar"
         android:gravity="center"
+        android:padding="0dp"
+        android:layout_margin="0dp"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/attachbtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@null"
             android:src="@drawable/attach" />
 
@@ -92,12 +89,12 @@
 
             android:hint="Start Typing"
             android:inputType="textCapSentences|textMultiLine"
-            android:padding="15dp" />
+            android:padding="7dp" />
 
         <ImageButton
             android:id="@+id/sendmsg"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@null"
             android:src="@drawable/send" />
 

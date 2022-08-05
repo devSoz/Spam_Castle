@@ -1,15 +1,19 @@
 package com.example.MyBuddy;
 
-        import androidx.annotation.NonNull;
+import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
-        import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
 
         import android.content.Context;
         import android.content.Intent;
         import android.os.Bundle;
-        import android.view.View;
-        import android.widget.Button;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
         import android.widget.Toast;
 
         import com.example.MyBuddy.Model.Model3;
@@ -24,7 +28,7 @@ package com.example.MyBuddy;
 
         import java.util.List;
 
-public class subscribe_topic extends AppCompatActivity
+public class subscribe_topic extends Fragment
 {
     public FirebaseDatabase firebaseDatabase;
     public DatabaseReference dbReference;
@@ -36,16 +40,45 @@ public class subscribe_topic extends AppCompatActivity
     public String myuid;
     private Context context;
     Button btnSubscribe;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topics_subscribe);
-        recyclerViewTopic = (RecyclerView) findViewById(R.id.recycler_view_topiclist);
-        recyclerViewTopic.setLayoutManager(new LinearLayoutManager(this));
-        context = getApplicationContext();
-        btnSubscribe =findViewById(R.id.btnSubscribe);
+        return inflater.inflate(R.layout.activity_topics_subscribe, container, false);
+    }
+
+    public static subscribe_topic newInstance(String param1, String param2) {
+        subscribe_topic fragment = new subscribe_topic();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        recyclerViewTopic = (RecyclerView) view.findViewById(R.id.recycler_view_topiclist);
+        recyclerViewTopic.setLayoutManager(new LinearLayoutManager(getContext()));
+        context = getContext();
+        btnSubscribe =view.findViewById(R.id.btnSubscribe);
 
         getUserId();
         getAllTopics();
@@ -83,7 +116,7 @@ public class subscribe_topic extends AppCompatActivity
 
             }
             adapterTopics.refreshData();
-            Toast.makeText(subscribe_topic.this, "Successfully subscribed to selected topics",Toast.LENGTH_SHORT ).show();;
+            Toast.makeText(getActivity(), "Successfully subscribed to selected topics",Toast.LENGTH_SHORT ).show();;
 
             }
         });
@@ -137,21 +170,21 @@ public class subscribe_topic extends AppCompatActivity
 
 
                 }
-                adapterTopics = new AdapterSubscribe(topicList,hashMap1, subscribe_topic.this, R.layout.activity_subscribe_list,myuid);
+                adapterTopics = new AdapterSubscribe(topicList,hashMap1, getContext(), R.layout.activity_subscribe_list,myuid);
                 recyclerViewTopic.setAdapter(adapterTopics);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error)
             {
-
+                Log.d("error","test");
             }
         });
     }
 
     public void getUserId()
     {
-        Intent intent = getIntent();
+        Intent intent = getActivity().getIntent();
         myuid = intent.getStringExtra("userId");
     }
 

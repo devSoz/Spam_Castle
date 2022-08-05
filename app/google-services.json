@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "71669961602",
+    "firebase_url": "https://my-buddy-c3898-default-rtdb.firebaseio.com",
     "project_id": "my-buddy-c3898",
     "storage_bucket": "my-buddy-c3898.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "71669961602-ljur7rn3h7vgpmo25hl8trqinlhg596a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.MyBuddy",
+            "certificate_hash": "562f981766d75c8b799ec7880a07b90e14054187"
+          }
+        },
         {
           "client_id": "71669961602-j67cgceog4i3cah4elsthj66mb920jmu.apps.googleusercontent.com",
           "client_type": 3
@@ -27,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "71669961602-j67cgceog4i3cah4elsthj66mb920jmu.apps.googleusercontent.com",
+              "client_id": "71669961602-am7bmcfmbtp54tpfpa76bmn1lef1tqb4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

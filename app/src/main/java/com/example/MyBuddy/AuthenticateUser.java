@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,22 +71,24 @@ public class AuthenticateUser extends AppCompatActivity {
         LinearLayout linearauth=(LinearLayout)  findViewById(R.id.linearauth);
 
         getUserData();
-       /* databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-        String name = "Sumathi Jeganathan";
-        String email = "sumathi.jeganathan@gmail.com";
+     /* String name = "Devipriya Sozharajan";
+        String email = "devipriyasabi@gmail.com";
+        name = "Sumathi Jeganathan";
+        email = "sumathi.jeganathan@gmail.com";
         String imageUrl = "https://firebasestorage.googleapis.com/v0/b/my-buddy-c3898.appspot.com/o/ChatImages%2Fpost1629645431303?alt=media&token=35e6126a-570e-4f1d-a289-7fbb60e5412c";
         Boolean typing = false;
-        String u="bqewNaOAk8e3cASuGCjyLXolCaO2";
+        String u="qKQCqpzNkuM5VoQ8lnT2VUrxqp82";
         user user1 = new user(u, name, email, imageUrl, typing, true);
         databaseReference.child(u).setValue(user1);
         //user.isNew = isNewUser;
-         name = "Devipriya Sozharajan";
-         email = "devipriyasabi@gmail.com";
+         name = "Sumathi Jeganathan";
+         email = "sumathi.jeganathan@gmail.com";
          imageUrl = "https://firebasestorage.googleapis.com/v0/b/my-buddy-c3898.appspot.com/o/ChatImages%2Fpost1629645431303?alt=media&token=35e6126a-570e-4f1d-a289-7fbb60e5412c";
-         typing = false;
+         typing = false;*/
 
-    u="dcLgBgvDLhNkprfbOHayJXdDQYY2";
+    /*u="dcLgBgvDLhNkprfbOHayJXdDQYY2";
         user1 = new user(u, name, email, imageUrl, typing, true);
         //databaseReference.push().setValue(user);
         databaseReference.child(u).setValue(user1);
@@ -126,7 +129,7 @@ public class AuthenticateUser extends AppCompatActivity {
 
         if(myuid !="") {
           // linearauth.setVisibility(View.);
-            Intent intentFirst = new Intent(AuthenticateUser.this, topicsListActivity.class);
+            Intent intentFirst = new Intent(AuthenticateUser.this, MenuActivity.class);
             intentFirst.putExtra("userId", myuid);
             intentFirst.putExtra("imageUrl", imageUrl);
 
@@ -162,8 +165,8 @@ public class AuthenticateUser extends AppCompatActivity {
     private void initGoogleSignInClient() {
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                //.requestIdToken("71669961602-am7bmcfmbtp54tpfpa76bmn1lef1tqb4.apps.googleusercontent.com")
+                //.requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken("71669961602-am7bmcfmbtp54tpfpa76bmn1lef1tqb4.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -249,7 +252,7 @@ public class AuthenticateUser extends AppCompatActivity {
                                         showToast("User already registered");
                                     }
                                     storeUserData(myuid,name,imageUrl);
-                                    Intent intentFirst = new Intent(AuthenticateUser.this, topicsListActivity.class);
+                                    Intent intentFirst = new Intent(AuthenticateUser.this, Menu.class);
                                     intentFirst.putExtra("userId", myuid);
 
                                     startActivity(intentFirst);
@@ -300,6 +303,9 @@ public class AuthenticateUser extends AppCompatActivity {
         name = sharedPreferences.getString("name", "");
         myuid = sharedPreferences.getString("uid", "");
         imageUrl = sharedPreferences.getString("imageUrl", "");
+      //  name = "Sumathi";
+      //  myuid = "qKQCqpzNkuM5VoQ8lnT2VUrxqp82";
+     //   imageUrl = "";
 
 
     }

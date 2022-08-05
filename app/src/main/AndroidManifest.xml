@@ -14,10 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
+        <activity
+            android:name=".MenuActivity"
+            android:exported="true" />
         <activity android:name=".test" />
         <activity android:name=".subscribe_topic" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".NavigationActivity" />
         <activity android:name=".topicsListActivity" />
         <activity android:name=".MessageActivity" />
         <activity android:name=".AuthenticateUser" />

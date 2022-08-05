@@ -2,6 +2,7 @@ package com.example.MyBuddy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,7 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -25,39 +28,62 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class topicsListActivity extends AppCompatActivity
+public class topicsListActivity extends Fragment
 {
     public FirebaseDatabase firebaseDatabase;
     public DatabaseReference dbReference;
-    public List<Topic> topicList;
+    public ArrayList<Topic> topicList;
     public RecyclerView recyclerViewTopic;
     public AdapterTopics adapterTopics;
     public String myuid;
     private Context context;
     Button btnClick;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topics_list);
-        btnClick=findViewById(R.id.btnclick);
-        recyclerViewTopic = (RecyclerView) findViewById(R.id.recycler_view_topics);
-        recyclerViewTopic.setLayoutManager(new LinearLayoutManager(this));
-        context = getApplicationContext();
+        return inflater.inflate(R.layout.activity_topics_list, container, false);
+    }
+
+    public static topicsListActivity newInstance(String param1, String param2) {
+        topicsListActivity fragment = new topicsListActivity();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+
+        recyclerViewTopic = (RecyclerView) view.findViewById(R.id.recycler_view_topics);
+        recyclerViewTopic.setLayoutManager(new LinearLayoutManager(getContext()));
+        context = getContext();
 
         getUserId();
         getAllTopics();
-        btnClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
-                intent.putExtra("userId", myuid);
-                startActivity(intent);
-            }
-        });
+
     }
 
     private void getAllTopics()
@@ -87,9 +113,12 @@ public class topicsListActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 topicList.clear();
+                // Map<String, Topic> td = (HashMap<String,Topic>) snapshot.getValue();
 
+                // ArrayList<Topic> topicList = new ArrayList<>(td.values());
                 for(DataSnapshot snapshot1 : snapshot.getChildren())
                 {
+
 
                     Topic topic = snapshot1.getValue(Topic.class);
                     if(topic.getUserId().contains(myuid))
@@ -98,7 +127,7 @@ public class topicsListActivity extends AppCompatActivity
 
 
                 }
-                adapterTopics = new AdapterTopics(topicList, topicsListActivity.this, R.layout.topics_list,myuid);
+                adapterTopics = new AdapterTopics(topicList, getActivity(), R.layout.topics_list,myuid);
                 recyclerViewTopic.setAdapter(adapterTopics);
                     }
 
@@ -112,7 +141,7 @@ public class topicsListActivity extends AppCompatActivity
 
     public void getUserId()
     {
-        Intent intent = getIntent();
+        Intent intent = getActivity().getIntent();
         myuid = intent.getStringExtra("userId");
     }
 

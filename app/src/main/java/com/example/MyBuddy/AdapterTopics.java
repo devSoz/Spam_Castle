@@ -104,11 +104,11 @@ public class AdapterTopics extends RecyclerView.Adapter<AdapterTopics.topicViewH
         holder.txtTopicLasttime.setText(dateTime);
         holder.txtName.setText(topicName);
         holder.txtTopicCount.setText("(30 New Messages)");
-      /*  Picasso.get()
+       Picasso.get()
                 .load(topicList.get(position).getImageUrl())
                 .placeholder(R.color.white)
-                .into(holder.imageTopic);*/
-     //   holder.txtUserCount.setText(String.valueOf(topicList.get(position).getUserId().size()));
+                .into(holder.imageTopic);
+     holder.txtTopicCount.setText(" (" + String.valueOf(topicList.get(position).getUserId().size())+ " users)");
         holder.linearTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
